@@ -91,30 +91,6 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-
-    # connection_queue = neighbors_for_person(source)
-    # paths = []
-    #
-    # def add_to_paths(all_paths, parent_id, action):
-    #     if not all_paths:
-    #         paths.append([action])
-    #         return
-    #     for path in all_paths:
-    #         if path[-1][1] == parent_id:
-    #             path.append(action)
-    #
-    # while True:
-    #     if not connection_queue:
-    #         return None
-    #     candidate = connection_queue.pop()
-    #     add_to_paths(paths, source, candidate)
-    #     if candidate[1] == target:
-    #         break
-    #     source = candidate[1]
-    #     connection_queue.union(neighbors_for_person(source))
-    #
-    # return sorted(paths)[0]
-
     parent = Node(source, None, None)
     frontier = QueueFrontier()
     frontier.add(parent)
@@ -125,8 +101,8 @@ def shortest_path(source, target):
         if frontier.empty():
             return None
 
-        curr = frontier.remove() # parent node
-        neighbours = neighbors_for_person(curr.state) # list of (movie_id, person_id) pairs
+        curr = frontier.remove()  # parent node
+        neighbours = neighbors_for_person(curr.state)  # list of (movie_id, person_id) pairs
 
         checked.add(curr.state)
 
