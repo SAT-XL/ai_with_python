@@ -2,9 +2,6 @@
 Tic Tac Toe Player
 """
 import copy
-import math
-
-from pygame.display import update
 
 X = "X"
 O = "O"
