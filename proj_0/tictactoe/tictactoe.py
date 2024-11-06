@@ -238,5 +238,3 @@ def minimax(board):
                 worst_solution = player_actions[i]
         return mild_solution if mild_solution is not None else worst_solution
 
-
-
