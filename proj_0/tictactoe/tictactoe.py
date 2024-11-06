@@ -179,23 +179,6 @@ def minimax(board):
     >>> minimax(b3)
 
     """
-    # if terminal(board):
-    #     return None
-    # utilitis = {}
-    # for action in actions(board):
-    #     while not terminal(current_stage):
-    #         current_stage = result(current_stage, minimax(current_stage))
-    #     final_utility = utility(current_stage)
-    #     if final_utility in utilitis:
-    #         utilitis[final_utility].append(action)
-    #     else:
-    #         utilitis[final_utility] = [action]
-    #
-    # curr_player = player(board)
-    # if curr_player == "X":
-    #     return utilitis[1][0] if 1 in utilitis else utilitis[0][0]
-    # return utilitis[-1][0] if 1 in utilitis else utilitis[0][0]
-
     if terminal(board):
         return None
     utilities = []
@@ -211,8 +194,8 @@ def minimax(board):
         utilities.append(final_utility)
 
     # Utilities match action with its utility,
-    # for use X, prefer to choose action with utility 1
-    # for use O, prefer to choose action with utility -1
+    # for user X, prefer to choose action with utility 1
+    # for user O, prefer to choose action with utility -1
 
     curr_player = player(board)
     if curr_player == "X":
