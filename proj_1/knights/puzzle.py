@@ -12,21 +12,70 @@ CKnave = Symbol("C is a Knave")
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    # TODO
+    Or(AKnight, AKnave),
+    Not(And(AKnight, AKnave)),
+    Or(BKnight, BKnave),
+    Not(And(BKnight, BKnave)),
+    Or(CKnight, CKnave),
+    Not(And(CKnight, CKnave)),
+    Or(
+        And(AKnight, And(AKnight, AKnave)),
+        And(AKnave, Not(And(AKnight, AKnave)))
+    )
 )
 
 # Puzzle 1
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    # TODO
+    Or(AKnight, AKnave),
+    Not(And(AKnight, AKnave)),
+    Or(BKnight, BKnave),
+    Not(And(BKnight, BKnave)),
+    Or(CKnight, CKnave),
+    Not(And(CKnight, CKnave)),
+    Or(
+        And(AKnight, And(AKnave, BKnave)),
+        And(AKnave, Not(And(AKnave, BKnave)))
+    )
 )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    Or(AKnight, AKnave),
+    Not(And(AKnight, AKnave)),
+    Or(BKnight, BKnave),
+    Not(And(BKnight, BKnave)),
+    Or(CKnight, CKnave),
+    Not(And(CKnight, CKnave)),
+    Or(
+        And(AKnight, Or(
+                        And(AKnight, BKnight),
+                        And(AKnave, BKnave)
+                        )
+            ),
+        And(AKnave, Not(Or(
+                            And(AKnight, BKnight),
+                            And(AKnave, BKnave)
+                            )
+                        )
+            )
+    ),
+    Or(
+        And(BKnight, Or(
+                        And(AKnight, BKnave),
+                        And(AKnave, BKnight)
+                        )
+            ),
+        And(BKnave, Not(Or(
+                            And(AKnight, BKnave),
+                            And(AKnave, BKnight)
+                            )
+                        )
+            )
+    )
 )
 
 # Puzzle 3
@@ -35,7 +84,33 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    Or(AKnight, AKnave),
+    Not(And(AKnight, AKnave)),
+    Or(BKnight, BKnave),
+    Not(And(BKnight, BKnave)),
+    Or(CKnight, CKnave),
+    Not(And(CKnight, CKnave)),
+    Or(
+        And(AKnight, Or(AKnight, AKnave)),
+        And(AKnave, Not(Or(AKnight, AKnave)))
+    ),
+    Or(
+        And(BKnight, Or(
+                        And(AKnight, AKnave),
+                        And(AKnave, Not(AKnave)))),
+        And(BKnave, Not(Or(
+                        And(AKnight, AKnave),
+                        And(AKnave, Not(AKnave)))))
+    ),
+    Or(
+        And(BKnight, CKnave),
+        And(BKnave, Not(CKnave))
+    ),
+    Or(
+        And(CKnight, AKnight),
+        And(CKnave, Not(AKnight))
+    )
+
 )
 
 
