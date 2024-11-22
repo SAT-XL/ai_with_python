@@ -207,21 +207,60 @@ class MinesweeperAI():
             result.remove(cell_position)
             return result
 
+        # Get neighbors and remove any cells we already know about
         neighbours = get_neighbours(cell)
-        new_sentence = Sentence(neighbours, count)
-        self.knowledge.append(new_sentence)
+        unknown_neighbours = set()
+        for neighbour in neighbours:
+            if neighbour not in self.safes and neighbour not in self.mines:
+                unknown_neighbours.add(neighbour)
+        
+        # Adjust count by subtracting known mines
+        mine_count = count
+        for neighbour in neighbours:
+            if neighbour in self.mines:
+                mine_count -= 1
 
-        # mark any additional cells as safe or as mines if it can be concluded based on the AI's knowledge base
-        self.mines.union(new_sentence.known_mines())
-        self.safes.union(new_sentence.known_safes())
+        # Add new sentence if we have unknown cells
+        if unknown_neighbours:
+            new_sentence = Sentence(unknown_neighbours, mine_count)
+            self.knowledge.append(new_sentence)
 
-        # add any new sentences to the AI's knowledge base if they can be inferred from existing knowledge
-        for s1 in self.knowledge:
-            for s2 in self.knowledge:
-                if s1.cells.issubset(s2.cells):
-                    self.knowledge.append(Sentence(s2.cells - s1.cells, s2.count - s1.count))
-                elif s2.cells.issubset(s1.cells):
-                    self.knowledge.append(Sentence(s1.cells - s2.cells, s1.count - s2.count))
+        # Keep checking for new conclusions until no more can be drawn
+        knowledge_changed = True
+        while knowledge_changed:
+            knowledge_changed = False
+
+            # Check each sentence for new mines/safes
+            for sentence in self.knowledge:
+                new_mines = sentence.known_mines()
+                new_safes = sentence.known_safes()
+
+                # Mark any new mines
+                for mine in new_mines:
+                    if mine not in self.mines:
+                        self.mark_mine(mine)
+                        knowledge_changed = True
+
+                # Mark any new safe cells
+                for safe in new_safes:
+                    if safe not in self.safes:
+                        self.mark_safe(safe)
+                        knowledge_changed = True
+
+            # Remove any empty sentences
+            self.knowledge = [s for s in self.knowledge if s.cells]
+
+            # Try to infer new sentences
+            for s1 in self.knowledge:
+                for s2 in self.knowledge:
+                    if s1 != s2 and s1.cells.issubset(s2.cells):
+                        new_cells = s2.cells - s1.cells
+                        new_count = s2.count - s1.count
+                        new_sentence = Sentence(new_cells, new_count)
+                        
+                        if new_sentence not in self.knowledge and new_cells:
+                            self.knowledge.append(new_sentence)
+                            knowledge_changed = True
 
 
 
