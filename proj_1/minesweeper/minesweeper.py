@@ -132,7 +132,7 @@ class Sentence():
         a cell is known to be safe.
         """
         if cell in self.cells:
-            self.cells.pop(cell)
+            self.cells.remove(cell)
 
 
 class MinesweeperAI():
@@ -232,8 +232,8 @@ class MinesweeperAI():
 
             # Check each sentence for new mines/safes
             for sentence in self.knowledge:
-                new_mines = sentence.known_mines()
-                new_safes = sentence.known_safes()
+                new_mines = sentence.known_mines().copy()  # Create a copy to avoid modification during iteration
+                new_safes = sentence.known_safes().copy()  # Create a copy to avoid modification during iteration
 
                 # Mark any new mines
                 for mine in new_mines:
@@ -262,8 +262,6 @@ class MinesweeperAI():
                             self.knowledge.append(new_sentence)
                             knowledge_changed = True
 
-
-
     def make_safe_move(self):
         """
         Returns a safe cell to choose on the Minesweeper board.
@@ -278,7 +276,6 @@ class MinesweeperAI():
                 return cell
         return None
 
-
     def make_random_move(self):
         """
         Returns a move to make on the Minesweeper board.
@@ -291,4 +288,6 @@ class MinesweeperAI():
             for j in range(self.height):
                 if (i, j) not in self.moves_made.union(self.mines):
                     available_positions.add((i, j))
+        if len(available_positions) == 0:
+            return None
         return random.choice(list(available_positions))
