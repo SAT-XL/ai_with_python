@@ -119,7 +119,37 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    num_pages = len(corpus)
+    ranks = {page: 1 / num_pages for page in corpus}
+
+    while True:
+
+        new_ranks = {}
+        max_change = 0
+
+        for page in corpus:
+            # Calculate random surfer probability
+            new_rank = (1 - damping_factor) / num_pages
+
+            # Find pages that link to current page
+            linking_pages = {p for p in corpus if page in corpus[p]}
+
+            # If a page has no links, treat it as if it links to all pages
+            linking_pages.update(p for p in corpus if not corpus[p])
+
+            for linking_page in linking_pages:
+                num_links = len(corpus[linking_page]) if corpus[linking_page] else num_pages
+                new_rank += damping_factor * ranks[linking_page] / num_links
+
+            new_ranks[page] = new_rank
+            max_change = max(max_change, abs(new_ranks[page] - ranks[page]))
+
+        if max_change < 0.001:
+            break
+
+        ranks = new_ranks
+
+    return ranks
 
 
 if __name__ == "__main__":
