@@ -159,7 +159,6 @@ class CrosswordCreator():
                     arcs.append((z, x))
         return True
 
-
     def assignment_complete(self, assignment):
         """
         Return True if `assignment` is complete (i.e., assigns a value to each
@@ -169,7 +168,6 @@ class CrosswordCreator():
             if var not in assignment:
                 return False
         return True
-
 
     def consistent(self, assignment):
         """
@@ -197,7 +195,6 @@ class CrosswordCreator():
                             
         return True
 
-
     def order_domain_values(self, var, assignment):
         """
         Return a list of values in the domain of `var`, in order by
@@ -220,7 +217,6 @@ class CrosswordCreator():
             values[value] = n_eliminated
             
         return sorted(values.keys(), key=lambda x: values[x])
-
 
     def select_unassigned_variable(self, assignment):
         """
@@ -252,7 +248,6 @@ class CrosswordCreator():
                 min_neighbors = neighbors
                 
         return min_var
-
 
     def backtrack(self, assignment):
         """
